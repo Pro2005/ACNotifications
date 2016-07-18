@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol ACPresenter: class {
+public protocol ACPresenter: class {
     func addView(view: UIView)
     func removeView(view: UIView)
 }

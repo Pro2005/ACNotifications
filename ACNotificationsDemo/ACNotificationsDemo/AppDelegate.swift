@@ -12,7 +12,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    let manager = ACManager(defaultPresenter: ACPresenterLog(), defaultAnimation: ACAnimationLog())
+//    let manager = ACManager(defaultPresenter: ACPresenterLog(), defaultAnimation: ACAnimationLog())
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -23,10 +23,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 Int64(1 * Double(NSEC_PER_SEC))
             ),
             dispatch_get_main_queue(), {
-                self.manager.addNotification(ACNotificationLog())
-                self.manager.addNotification(ACNotificationLog())
-                self.manager.addNotification(ACNotificationLog())
-                self.manager.addNotification(ACNotificationLog())
+//                self.manager.addNotification(ACNotificationLog())
+//                self.manager.addNotification(ACNotificationLog())
+//                self.manager.addNotification(ACNotificationLog())
+//                self.manager.addNotification(ACNotificationLog())
         })
         
         return true

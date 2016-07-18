@@ -21,22 +21,27 @@ private func GCDNow(closure:()->()) {
     dispatch_async(dispatch_get_main_queue(), closure)
 }
 
+public enum ACTaskState {
+    case Waiting
+    case Presenting
+    case Active
+    case Dismissing
+    case Finished
+}
 
+public protocol ACTask : class {
+    var notification: ACNotification { get }
+    var animation: ACAnimation { get }
+    var presenter: ACPresenter { get }
+    var state: ACTaskState { get set }
+}
 
-public class ACNotificationTask {
+public class ACNotificationTask : ACTask {
 
-    enum ACTaskState {
-        case Waiting
-        case Presenting
-        case Active
-        case Dismissing
-        case Finished
-    }
-
-    let notification: ACNotification
-    let animation: ACAnimation
-    let presenter: ACPresenter?
-    var state: ACTaskState = .Waiting {
+    public let notification: ACNotification
+    public let animation: ACAnimation
+    public let presenter: ACPresenter
+    public var state: ACTaskState = .Waiting {
         didSet {
             let notificationState: ACNotificationState
             switch state {
@@ -50,137 +55,144 @@ public class ACNotificationTask {
         }
     }
 
-    init(notification: ACNotification, presenter: ACPresenter?, animation: ACAnimation) {
+    init(notification: ACNotification, presenter: ACPresenter, animation: ACAnimation) {
         self.notification = notification
         self.presenter = presenter
         self.animation = animation
     }
 }
 
-
+//class ACManager<T: ACTask> {
 class ACManager {
     
-    var defaultPresenter: ACPresenter?
-    var defaultAnimation: ACAnimation
+//    var defaultPresenter: ACPresenter?
+//    var defaultAnimation: ACAnimation
     
-    private(set) var queue: [ACNotificationTask] = []
+    private(set) var queue: [ACTask] = []
     
-// MARK: Public methods
     
-    init(defaultPresenter: ACPresenter? = ACPresenterStatusBar(), defaultAnimation: ACAnimation = ACAnimationSlideDown()) {
-        self.defaultPresenter = defaultPresenter
-        self.defaultAnimation = defaultAnimation
+//    init(defaultPresenter: ACPresenter? = ACPresenterStatusBar(), defaultAnimation: ACAnimation = ACAnimationSlideDown()) {
+//        self.defaultPresenter = defaultPresenter
+//        self.defaultAnimation = defaultAnimation
+//    }
+    
+//    func addNotification(notification: ACNotification,
+//                         presenter: ACPresenter? = nil,
+//                         animation: ACAnimation? = nil) -> ACNotificationTask {
+//        
+//        let notificationTask = ACNotificationTask(notification: notification, presenter: presenter ?? defaultPresenter, animation: animation ?? defaultAnimation)
+//        queue.append(notificationTask)
+//        processNewState(notificationTask)
+//        return notificationTask
+//    }
+    //MARK: Public methods
+    
+    func addTask(task: ACTask){
+        guard task.state == .Waiting else { print("ACManager. Only .Waiting ACTask could be added to queue."); return }
+        queue.append(task)
+        presentTaskIfPossible(task)
     }
     
-    func addNotification(notification: ACNotification,
-                         presenter: ACPresenter? = nil,
-                         animation: ACAnimation? = nil) -> ACNotificationTask {
+    func dismissTask(task: ACTask) {
+        dismissTaskIfPossible(task)
+    }
+
+    func removeTask(task: ACTask) {
         
-        let notificationTask = ACNotificationTask(notification: notification, presenter: presenter ?? defaultPresenter, animation: animation ?? defaultAnimation)
-        queue.append(notificationTask)
-        processNewState(notificationTask)
-        return notificationTask
-    }
-    
-// MARK: Queue methods
-    
-    private func activeTaskForPresenter(presenter: ACPresenter?) -> ACNotificationTask? {
-        for task in queue where task.presenter === presenter && task.state != .Waiting{ return task }
-        return nil
-    }
-    
-    private func waitingTaskForPresenter(presenter: ACPresenter?) -> ACNotificationTask? {
-        for task in queue where task.presenter === presenter && task.state == .Waiting { return task }
-        return nil
-    }
-    
-    private func isUsedPresenter(presenter: ACPresenter?) -> Bool {
-        return activeTaskForPresenter(presenter) != nil
-    }
-    
-    private func removeTask(task: ACNotificationTask) {
+        guard task.state == .Waiting || task.state == .Finished else {
+            print("ACManager. Only .Waiting or .Finished ACTask could be removed from queue.")
+            return
+        }
+        
         if let index = queue.indexOf({$0 === task}) {
             queue.removeAtIndex(index)
         }
     }
-
-// MARK: Tasks activation
     
-    private func processNewState(task: ACNotificationTask) {
-        let state = task.state
-        
-        if .Waiting == state {
-            if !isUsedPresenter(task.presenter) {
-                
-                task.state = .Presenting
-                
-                present(task) {
-                    task.state = .Active
-                    self.processNewState(task)
-                }
-            }
+// MARK: Queue methods
+    
+    private func activeTaskForPresenter(presenter: ACPresenter) -> ACTask? {
+        for task in queue where task.presenter === presenter && task.state != .Waiting{ return task }
+        return nil
+    }
+    
+    private func waitingTaskForPresenter(presenter: ACPresenter) -> ACTask? {
+        for task in queue where task.presenter === presenter && task.state == .Waiting { return task }
+        return nil
+    }
+    
+    private func isUsedPresenter(presenter: ACPresenter) -> Bool {
+        return activeTaskForPresenter(presenter) != nil
+    }
+    
+// MARK: Tasks manipulation
+    
+    private func presentTaskIfPossible(task: ACTask) {
+        guard task.state == .Waiting else { print("ACManager: Only .Waiting tasks could be presented."); return }
+        guard !isUsedPresenter(task.presenter) else { return }
+
+        task.state = .Presenting
+        present(task) {
+            task.state = .Active
         }
-        if .Active == state {
-            GCDAfter(task.notification.notificationDuration, closure: {
+    }
+    
+    private func dismissTaskIfPossible(task: ACTask) {
+        guard task.state == .Active else { print("ACManager. Only .Active ACTask could be dismissed."); return }
+        
+        task.state = .Dismissing
+        
+        if let newTask = waitingTaskForPresenter(task.presenter) where newTask.animation.hasInOutAnimation
+        {
+            newTask.state = .Presenting
+            replace(task, newTask: newTask, completion: {
+                task.state = .Finished
+                self.removeTask(task)
+                newTask.state = .Active
+            })
+        }
+        else {
+            dismiss(task, completion: {
+                task.state = .Finished
+                self.removeTask(task)
                 
-                task.state = .Dismissing
-                
-                if let newTask = self.waitingTaskForPresenter(task.presenter) where newTask.animation.hasInOutAnimation {
-                    
-                    newTask.state = .Presenting
-                    
-                    self.replace(task, newTask: newTask, completion: {
-                        
-                        task.state = .Finished
-                        self.removeTask(task)
-                        newTask.state = .Active
-                        self.processNewState(newTask)
-                    })
-                }
-                else {
-                    self.dismiss(task, completion: {
-                        task.state = .Finished
-                        self.removeTask(task)
-                        
-                        if let newTask = self.waitingTaskForPresenter(task.presenter) {
-                            self.processNewState(newTask)
-                        }
-                    })
+                if let newTask = self.waitingTaskForPresenter(task.presenter) {
+                    self.presentTaskIfPossible(newTask)
                 }
             })
         }
     }
     
 // MARK: Animation methods
-    private func present(task: ACNotificationTask, completion:() -> Void) {
+    private func present(task: ACTask, completion:() -> Void) {
         
         let presenter = task.presenter
         let animation = task.animation
         let view = task.notification.notificationView
 
-        presenter?.addView(view)
+        presenter.addView(view)
         animation.animateIn(view: view, completion: { completion() })
     }
     
-    private func replace(oldTask: ACNotificationTask, newTask: ACNotificationTask, completion:() -> Void) {
+    private func replace(oldTask: ACTask, newTask: ACTask, completion:() -> Void) {
 
-        precondition(oldTask.presenter === newTask.presenter, "ACNotifications: Presenters should be the same for replace animation.")
-        precondition(newTask.animation.hasInOutAnimation, "ACNotifications: Animation does not support replacement.")
+        precondition(oldTask.presenter === newTask.presenter, "ACManager: Presenters should be the same for replace animation.")
+        precondition(newTask.animation.hasInOutAnimation, "ACManager: Animation does not support replacement.")
         
         let presenter = oldTask.presenter
         let oldView = oldTask.notification.notificationView
         let animation = newTask.animation
         let newView = newTask.notification.notificationView
         
-        presenter?.addView(newView)
+        presenter.addView(newView)
         animation.animateInOut(view: newView, previousView: oldView) {
 
-            presenter?.removeView(oldView)
+            presenter.removeView(oldView)
             completion()
         }
     }
     
-    private func dismiss(task: ACNotificationTask, completion:() -> Void) {
+    private func dismiss(task: ACTask, completion:() -> Void) {
         
         let presenter = task.presenter
         let animation = task.animation
@@ -188,7 +200,7 @@ class ACManager {
         
         animation.animateOut(view: view, completion: {
             
-            presenter?.removeView(view)
+            presenter.removeView(view)
             completion()
         })
     }
@@ -198,3 +210,4 @@ class ACManager {
 //Пример: Анимация, требующая дополнительной инфы (наездающий на нотификешн статус бар)
 //С приоритетом
 //Presenter поддерживающий несколько нотификейшенов одновременно
+//Можно ли требование наследования от class заменить на требование Equitable без необходимости дополнительного кода в presenters и tasks?
