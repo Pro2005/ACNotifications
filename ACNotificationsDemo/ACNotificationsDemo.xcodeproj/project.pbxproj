@@ -18,6 +18,8 @@
 		D236E1A31D32AD580010B933 /* ACAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = D236E1A21D32AD580010B933 /* ACAnimations.swift */; };
 		D236E1A51D33D5F90010B933 /* ACSimpleNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = D236E1A41D33D5F90010B933 /* ACSimpleNotifications.swift */; };
 		D236E1A71D33DCC40010B933 /* ACPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D236E1A61D33DCC40010B933 /* ACPresenter.swift */; };
+		D23D2C721D3D702700A9FDE8 /* ACBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23D2C711D3D702700A9FDE8 /* ACBase.swift */; };
+		D23D2C741D3D741D00A9FDE8 /* ACBaseExtended.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23D2C731D3D741D00A9FDE8 /* ACBaseExtended.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +48,8 @@
 		D236E1A21D32AD580010B933 /* ACAnimations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ACAnimations.swift; path = ACNotifications/ACAnimations.swift; sourceTree = "<group>"; };
 		D236E1A41D33D5F90010B933 /* ACSimpleNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ACSimpleNotifications.swift; path = ACNotifications/ACSimpleNotifications.swift; sourceTree = "<group>"; };
 		D236E1A61D33DCC40010B933 /* ACPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ACPresenter.swift; path = ACNotifications/ACPresenter.swift; sourceTree = "<group>"; };
+		D23D2C711D3D702700A9FDE8 /* ACBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ACBase.swift; path = ACNotifications/ACBase.swift; sourceTree = "<group>"; };
+		D23D2C731D3D741D00A9FDE8 /* ACBaseExtended.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ACBaseExtended.swift; path = ACNotifications/ACBaseExtended.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,13 +114,47 @@
 		D236E19D1D3243C00010B933 /* ACNotifications */ = {
 			isa = PBXGroup;
 			children = (
+				D23D2C751D3D75E200A9FDE8 /* Notifications */,
+				D23D2C761D3D760800A9FDE8 /* Animations */,
+				D23D2C771D3D761100A9FDE8 /* Presenters */,
+				D23D2C781D3D763D00A9FDE8 /* Managers */,
 				D236E1A01D32444B0010B933 /* ACNotification.swift */,
-				D236E19E1D3244310010B933 /* ACManager.swift */,
-				D236E1A21D32AD580010B933 /* ACAnimations.swift */,
-				D236E1A61D33DCC40010B933 /* ACPresenter.swift */,
-				D236E1A41D33D5F90010B933 /* ACSimpleNotifications.swift */,
+				D23D2C711D3D702700A9FDE8 /* ACBase.swift */,
+				D23D2C731D3D741D00A9FDE8 /* ACBaseExtended.swift */,
 			);
 			name = ACNotifications;
+			sourceTree = "<group>";
+		};
+		D23D2C751D3D75E200A9FDE8 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				D236E1A41D33D5F90010B933 /* ACSimpleNotifications.swift */,
+			);
+			name = Notifications;
+			sourceTree = "<group>";
+		};
+		D23D2C761D3D760800A9FDE8 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				D236E1A21D32AD580010B933 /* ACAnimations.swift */,
+			);
+			name = Animations;
+			sourceTree = "<group>";
+		};
+		D23D2C771D3D761100A9FDE8 /* Presenters */ = {
+			isa = PBXGroup;
+			children = (
+				D236E1A61D33DCC40010B933 /* ACPresenter.swift */,
+			);
+			name = Presenters;
+			sourceTree = "<group>";
+		};
+		D23D2C781D3D763D00A9FDE8 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				D236E19E1D3244310010B933 /* ACManager.swift */,
+			);
+			name = Managers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,12 +258,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D23D2C741D3D741D00A9FDE8 /* ACBaseExtended.swift in Sources */,
 				D236E1A31D32AD580010B933 /* ACAnimations.swift in Sources */,
 				D236E1A51D33D5F90010B933 /* ACSimpleNotifications.swift in Sources */,
 				D236E1801D3243810010B933 /* ViewController.swift in Sources */,
 				D236E1A11D32444B0010B933 /* ACNotification.swift in Sources */,
 				D236E17E1D3243810010B933 /* AppDelegate.swift in Sources */,
 				D236E19F1D3244310010B933 /* ACManager.swift in Sources */,
+				D23D2C721D3D702700A9FDE8 /* ACBase.swift in Sources */,
 				D236E1A71D33DCC40010B933 /* ACPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -418,6 +458,7 @@
 				D236E1991D3243820010B933 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D236E19A1D3243820010B933 /* Build configuration list for PBXNativeTarget "ACNotificationsDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -426,6 +467,7 @@
 				D236E19C1D3243820010B933 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
