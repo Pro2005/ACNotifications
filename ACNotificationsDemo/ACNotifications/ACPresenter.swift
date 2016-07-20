@@ -21,6 +21,32 @@ class ACPresenterLog: ACPresenter {
     }
 }
 
+class ACPresenterView: ACPresenter {
+    let presenterView: UIView
+    
+    init(view: UIView) {
+        presenterView = view
+    }
+    
+    func addView(view: UIView) {
+        presenterView.addSubview(view)
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint(item: view, attribute: .Leading, relatedBy: .Equal, toItem: presenterView, attribute: .Leading, multiplier: 1, constant: 0).active = true
+
+        NSLayoutConstraint(item: view, attribute: .Trailing, relatedBy: .Equal, toItem: presenterView, attribute: .Trailing, multiplier: 1, constant: 0).active = true
+        
+        NSLayoutConstraint(item: view, attribute: .Top, relatedBy: .Equal, toItem: presenterView, attribute: .Top, multiplier: 1, constant: 0).active = true
+        
+        presenterView.layoutSubviews()
+    }
+    
+    func removeView(view: UIView) {
+        view.removeFromSuperview()
+    }
+}
+
 class ACPresenterStatusBar: ACPresenter {
     func addView(view: UIView) { }
     func removeView(view: UIView) { }
@@ -32,8 +58,3 @@ class ACPresenterNavigationBar: ACPresenter {
     func removeView(view: UIView) { }
 }
 
-class ACPresenterView: ACPresenter {
-    init(view: UIView) { }
-    func addView(view: UIView) { }
-    func removeView(view: UIView) { }
-}

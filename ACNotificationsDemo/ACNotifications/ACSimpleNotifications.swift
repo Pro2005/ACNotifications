@@ -21,25 +21,25 @@ class ACNotificationLog: ACNotification {
 class ACViewNotification: ACNotification {
     
     private(set) var notificationView: UIView
-    private(set) var notificationDuration: NSTimeInterval
     
-    init(view: UIView, duration: NSTimeInterval) {
+    init(view: UIView) {
         notificationView = view
-        notificationDuration = duration
     }
 }
 
-class ACTextNotification: UILabel, ACNotification {
-    
+extension UIView: ACNotification {
     var notificationView: UIView { return self }
-    private(set) var notificationDuration: NSTimeInterval
-    
-    init(duration: NSTimeInterval) {
-        notificationDuration = duration
-        super.init(frame: CGRectZero)
+}
+
+class UILabelEdged: UILabel {
+    override func intrinsicContentSize() -> CGSize {
+        let size = super.intrinsicContentSize()
+        return CGSizeMake(size.width - 40.0, size.height + 40)
     }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+//    override func textRectForBounds(bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
+//        print(bounds, super.textRectForBounds(bounds, limitedToNumberOfLines: numberOfLines))
+//        let ggg = super.textRectForBounds(bounds, limitedToNumberOfLines: numberOfLines).insetBy(dx: 100, dy: -10)
+//        print(ggg)
+//        return ggg
+//    }
 }

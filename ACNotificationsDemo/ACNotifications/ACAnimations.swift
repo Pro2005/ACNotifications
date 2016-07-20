@@ -11,11 +11,11 @@ import UIKit
 
 class ACAnimationSlideDown: ACAnimationSimple {
     
-    var duration: NSTimeInterval = 0.5
+    var duration: NSTimeInterval = 5
     let hasInOutAnimation: Bool = false
     
     func preAnimation(view: UIView) {
-        view.transform = CGAffineTransformMakeTranslation(0, view.bounds.size.height)
+        view.transform = CGAffineTransformMakeTranslation(0, -view.bounds.size.height)
     }
     
     func inAnimation(view: UIView) {
@@ -23,7 +23,7 @@ class ACAnimationSlideDown: ACAnimationSimple {
     }
     
     func outAnimation(view: UIView) {
-        view.transform = CGAffineTransformMakeTranslation(0, view.bounds.size.height)
+        view.transform = CGAffineTransformMakeTranslation(0, -view.bounds.size.height)
     }
 }
 

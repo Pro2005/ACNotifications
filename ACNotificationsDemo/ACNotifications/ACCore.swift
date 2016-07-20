@@ -1,5 +1,5 @@
 //
-//  ACBaseExtended.swift
+//  ACBase.swift
 //  ACNotificationsDemo
 //
 //  Created by Yury on 18/07/16.
@@ -8,26 +8,35 @@
 
 import UIKit
 
-// MARK: ACNotification
-
-enum ACNotificationState {
-    case Waiting
-    case Presenting
-    case Active
-    case Dismissing
-    case Finished
+// MARK: - ACNotification
+protocol ACNotification {
+    var notificationView: UIView { get }
 }
 
-protocol ACStateChangedProtocol {
-    func stateChanged(state: ACNotificationState)
+// MARK: - ACPresenter
+protocol ACPresenter: class {
+    func addView(view: UIView)
+    func removeView(view: UIView)
 }
 
-protocol ACDismissProtocol : class {
-    var dismissCallback: (() -> Void) { get set }
+// MARK: - ACAnimation
+protocol ACAnimation {
+    func animateIn (view view: UIView, completion:() -> Void)
+    func animateOut(view view: UIView, completion:() -> Void)
+    
+    var hasInOutAnimation: Bool { get } // Default is false (see extension below)
+    func animateInOut(view view: UIView, previousView: UIView, completion:() -> Void) // Does nothing by default (see extension below)
+}
+
+// MARK: extension
+extension ACAnimation {
+    var hasInOutAnimation: Bool { return false }
+    func animateInOut(view view: UIView, previousView: UIView, completion:() -> Void) {
+        precondition(hasInOutAnimation, "ACNotifications: This method should never be called if hasInOutAnimation is false.")
+    }
 }
 
 // MARK: - ACAnimationSimple
-
 protocol ACAnimationSimple: ACAnimation {
     
     var duration: NSTimeInterval { get }
