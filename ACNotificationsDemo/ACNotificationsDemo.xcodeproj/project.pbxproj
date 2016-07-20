@@ -19,6 +19,8 @@
 		D236E1A51D33D5F90010B933 /* ACSimpleNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = D236E1A41D33D5F90010B933 /* ACSimpleNotifications.swift */; };
 		D236E1A71D33DCC40010B933 /* ACPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D236E1A61D33DCC40010B933 /* ACPresenter.swift */; };
 		D23D2C721D3D702700A9FDE8 /* ACCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23D2C711D3D702700A9FDE8 /* ACCore.swift */; };
+		D264C41B1D3F994A00428FAE /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D264C4191D3F994A00428FAE /* DemoViewController.swift */; };
+		D264C41C1D3F994A00428FAE /* DemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D264C41A1D3F994A00428FAE /* DemoViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +50,8 @@
 		D236E1A41D33D5F90010B933 /* ACSimpleNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ACSimpleNotifications.swift; path = ACNotifications/ACSimpleNotifications.swift; sourceTree = "<group>"; };
 		D236E1A61D33DCC40010B933 /* ACPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ACPresenter.swift; path = ACNotifications/ACPresenter.swift; sourceTree = "<group>"; };
 		D23D2C711D3D702700A9FDE8 /* ACCore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ACCore.swift; path = ACNotifications/ACCore.swift; sourceTree = "<group>"; };
+		D264C4191D3F994A00428FAE /* DemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
+		D264C41A1D3F994A00428FAE /* DemoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DemoViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +100,8 @@
 				D236E1841D3243810010B933 /* Assets.xcassets */,
 				D236E1861D3243810010B933 /* LaunchScreen.storyboard */,
 				D236E1891D3243810010B933 /* Info.plist */,
+				D264C4191D3F994A00428FAE /* DemoViewController.swift */,
+				D264C41A1D3F994A00428FAE /* DemoViewController.xib */,
 			);
 			path = ACNotificationsDemo;
 			sourceTree = "<group>";
@@ -230,6 +236,7 @@
 				D236E1881D3243810010B933 /* LaunchScreen.storyboard in Resources */,
 				D236E1851D3243810010B933 /* Assets.xcassets in Resources */,
 				D236E1831D3243810010B933 /* Main.storyboard in Resources */,
+				D264C41C1D3F994A00428FAE /* DemoViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,6 +257,7 @@
 				D236E1A31D32AD580010B933 /* ACAnimations.swift in Sources */,
 				D236E1A51D33D5F90010B933 /* ACSimpleNotifications.swift in Sources */,
 				D236E1801D3243810010B933 /* ViewController.swift in Sources */,
+				D264C41B1D3F994A00428FAE /* DemoViewController.swift in Sources */,
 				D236E1A11D32444B0010B933 /* ACManager.swift in Sources */,
 				D236E17E1D3243810010B933 /* AppDelegate.swift in Sources */,
 				D236E19F1D3244310010B933 /* ACManagerRich.swift in Sources */,
