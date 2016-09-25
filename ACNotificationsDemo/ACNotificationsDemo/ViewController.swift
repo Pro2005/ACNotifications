@@ -11,33 +11,43 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet var presentView: UIView!
+    var presenter: ACPresenterView!
     
     let manager = ACManager()
-    let animation = ACAnimationSlideDown()
-    var presenter: ACPresenterView!
-    let notification = UILabelEdged()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         presenter = ACPresenterView(view: presentView)
-        notification.text = "Hello world!!! Мой дядя самых честных правил когда не в шутку занемог, он уважать себя заставил и лучше выдумать не мог!"
-        notification.textAlignment = .center
-        notification.numberOfLines = 0
-        notification.backgroundColor = UIColor.red
+        manager.defaultPresenter = ACPresenterStatusBar()//ACPresenterView(view: presentView)
+        manager.defaultAnimation = ACAnimationSlideDown()
+        manager.defaultDelay = 4
+
+        let notification = SlimNotification()
+        notification.text = "Loading..."
+        notification.font = UIFont.systemFont(ofSize: 16)
+        
+        let notification2 = SlimNotification()
+        notification2.text = "Finished!"
+
+        let notification3 = UILabelEdged()
+        notification3.text = "Hello world!!! Мой дядя самых честных правил когда не в шутку занемог, он уважать себя заставил и лучше выдумать не мог!"
+        notification3.textAlignment = .center
+        notification3.numberOfLines = 0
+        notification3.backgroundColor = UIColor.red
+        
+        let notification4 = UILabelEdged()
+        notification4.text = "Его пример другим наука; Но, боже мой, какая скука С больным сидеть и день и ночь, Не отходя ни шагу прочь!"
+        notification4.textAlignment = .center
+        notification4.numberOfLines = 0
+        notification4.backgroundColor = UIColor.red
+        
         presentView.clipsToBounds = true
         
-        let _ = manager.add(notification: notification, delay: 5, presenter: presenter, animation: animation)
-//        presenter.addView(notification.notificationView)
-        
-//        animation.animateIn(view: notification.notificationView) {
-//            self.animation.animateOut(view: self.notification.notificationView, completion: {
-//                self.presenter.removeView(self.notification.notificationView)
-//            })
-//        }
-        
+        let _ = manager.add(notification: notification)
+        let _ = manager.add(notification: notification2)
+        let _ = manager.add(notification: notification3, delay: nil, presenter: presenter)
+        let _ = manager.add(notification: notification4, delay: nil, presenter: presenter)
     }
-
-
 }
 

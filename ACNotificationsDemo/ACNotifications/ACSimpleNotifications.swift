@@ -43,3 +43,27 @@ class UILabelEdged: UILabel {
 //        return ggg
 //    }
 }
+
+class SlimNotification: UILabel {
+    init() {
+        super.init(frame: CGRect.zero)
+        numberOfLines = 1
+        textAlignment = .center
+        backgroundColor = UIColor.green
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+//    override var intrinsicContentSize : CGSize {
+//        let size = super.intrinsicContentSize
+//        return CGSize(width: size.width - 0.0, height: size.height + 0)
+//    }
+    //    override func textRectForBounds(bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
+    //        print(bounds, super.textRectForBounds(bounds, limitedToNumberOfLines: numberOfLines))
+    //        let ggg = super.textRectForBounds(bounds, limitedToNumberOfLines: numberOfLines).insetBy(dx: 100, dy: -10)
+    //        print(ggg)
+    //        return ggg
+    //    }
+}
+
