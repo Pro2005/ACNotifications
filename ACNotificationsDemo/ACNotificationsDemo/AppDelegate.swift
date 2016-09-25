@@ -35,13 +35,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        DispatchQueue.main.asyncAfter(
-            deadline: DispatchTime.now() + Double(Int64(1 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: {
-//                self.manager.addNotification(ACNotificationLog())
-//                self.manager.addNotification(ACNotificationLog())
-//                self.manager.addNotification(ACNotificationLog())
-//                self.manager.addNotification(ACNotificationLog())
-        })
         
         return true
     }

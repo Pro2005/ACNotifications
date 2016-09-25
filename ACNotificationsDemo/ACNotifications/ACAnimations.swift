@@ -11,8 +11,12 @@ import UIKit
 
 class ACAnimationSlideDown: ACAnimationSimple {
     
-    var duration: TimeInterval = 5
+    let duration: TimeInterval
     let hasInOutAnimation: Bool = false
+    
+    init(duration: TimeInterval = 0.25) {
+        self.duration = duration
+    }
     
     func preAnimation(_ view: UIView) {
         view.transform = CGAffineTransform(translationX: 0, y: -view.bounds.size.height)

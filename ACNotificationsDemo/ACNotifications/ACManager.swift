@@ -88,7 +88,7 @@ class ACManager : ACManagerBase, ACTaskDismissProtocol {
     var defaultAnimation: ACAnimation
     var defaultDelay: TimeInterval?
 
-    init(defaultPresenter: ACPresenter = ACPresenterStatusBar(), defaultAnimation: ACAnimation = ACAnimationSlideDown()) {
+    init(defaultPresenter: ACPresenter = ACPresenterLog(), defaultAnimation: ACAnimation = ACAnimationSlideDown()) {
         self.defaultPresenter = defaultPresenter
         self.defaultAnimation = defaultAnimation
     }
