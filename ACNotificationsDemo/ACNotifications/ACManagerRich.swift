@@ -11,15 +11,15 @@ import UIKit
 // MARK: ACNotification's protocols
 
 enum ACNotificationState {
-    case Waiting
-    case Presenting
-    case Active
-    case Dismissing
-    case Finished
+    case waiting
+    case presenting
+    case active
+    case dismissing
+    case finished
 }
 
 protocol ACStateChangedProtocol {
-    func stateChanged(state: ACNotificationState)
+    func stateChanged(_ state: ACNotificationState)
 }
 
 protocol ACDismissProtocol : class {
@@ -29,7 +29,7 @@ protocol ACDismissProtocol : class {
 // MARK: - ACTaskDismissProtocol
 
 protocol ACTaskDismissProtocol : class {
-    func dismissTask(task: ACTask)
+    func dismissTask(_ task: ACTask)
 }
 
 // MARK: - ACTaskRich
@@ -40,26 +40,25 @@ class ACTaskRich : ACTask {
     let notification: ACNotification
     let animation: ACAnimation
     let presenter: ACPresenter
-    let delay: NSTimeInterval?
+    let delay: TimeInterval?
     weak var delegate: ACTaskDismissProtocol?
     
-    var state: ACTaskState = .Waiting {
+    var state: ACTaskState = .waiting {
         didSet {
             if let notification = notification as? ACStateChangedProtocol {
                 
                 let notificationState: ACNotificationState
                 switch state {
-                case .Waiting: notificationState = .Waiting
-                case .Presenting: notificationState = .Presenting
-                case .Active: notificationState = .Active
-                case .Dismissing: notificationState = .Dismissing
-                case .Finished: notificationState = .Finished
+                case .waiting: notificationState = .waiting
+                case .presenting: notificationState = .presenting
+                case .active: notificationState = .active
+                case .dismissing: notificationState = .dismissing
+                case .finished: notificationState = .finished
                 }
                 notification.stateChanged(notificationState)
             }
-            if state == .Active, let delay = delay {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))),
-                               dispatch_get_main_queue())
+            if state == .active, let delay = delay {
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC))
                 { [weak self] in self?.dismissSelf() }
             }
         }
@@ -69,14 +68,14 @@ class ACTaskRich : ACTask {
         delegate?.dismissTask(self)
     }
     
-    init(notification: ACNotification, presenter: ACPresenter, animation: ACAnimation, delay: NSTimeInterval? = nil) {
+    init(notification: ACNotification, presenter: ACPresenter, animation: ACAnimation, delay: TimeInterval? = nil) {
         self.notification = notification
         self.presenter = presenter
         self.animation = animation
         self.delay = delay
         if let notification = notification as? ACDismissProtocol {
             notification.dismissCallback = { [weak self] in
-                dispatch_async(dispatch_get_main_queue())
+                DispatchQueue.main.async
                 { self?.dismissSelf() }
             }
         }
@@ -90,21 +89,21 @@ class ACManagerRich : ACManager, ACTaskDismissProtocol {
 
     var defaultPresenter: ACPresenter
     var defaultAnimation: ACAnimation
-    var defaultDelay: NSTimeInterval?
+    var defaultDelay: TimeInterval?
 
     init(defaultPresenter: ACPresenter = ACPresenterStatusBar(), defaultAnimation: ACAnimation = ACAnimationSlideDown()) {
         self.defaultPresenter = defaultPresenter
         self.defaultAnimation = defaultAnimation
     }
     
-    func addTask(task: ACTaskRich) {
+    func addTask(_ task: ACTaskRich) {
         task.delegate = self
         super.addTask(task)
     }
     
     // Adds ACTaskRich with specified or default parameters.
-    func addNotification(notification: ACNotification,
-                         delay: NSTimeInterval? = nil,
+    func addNotification(_ notification: ACNotification,
+                         delay: TimeInterval? = nil,
                          presenter: ACPresenter? = nil,
                          animation: ACAnimation? = nil) -> ACTaskRich {
 

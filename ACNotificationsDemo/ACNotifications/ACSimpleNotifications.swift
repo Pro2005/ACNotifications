@@ -12,15 +12,15 @@ import UIKit
 class ACNotificationLog: ACNotification {
     
     var notificationView: UIView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-    var notificationDuration: NSTimeInterval = 5
-    func stateChanged(state: ACNotificationState) {
-        print(NSDate(), "ACNotification : stateChanged(\(state))")
+    var notificationDuration: TimeInterval = 5
+    func stateChanged(_ state: ACNotificationState) {
+        print(Date(), "ACNotification : stateChanged(\(state))")
     }
 }
 
 class ACViewNotification: ACNotification {
     
-    private(set) var notificationView: UIView
+    fileprivate(set) var notificationView: UIView
     
     init(view: UIView) {
         notificationView = view
@@ -32,9 +32,9 @@ extension UIView: ACNotification {
 }
 
 class UILabelEdged: UILabel {
-    override func intrinsicContentSize() -> CGSize {
-        let size = super.intrinsicContentSize()
-        return CGSizeMake(size.width - 40.0, size.height + 40)
+    override var intrinsicContentSize : CGSize {
+        let size = super.intrinsicContentSize
+        return CGSize(width: size.width - 40.0, height: size.height + 40)
     }
 //    override func textRectForBounds(bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
 //        print(bounds, super.textRectForBounds(bounds, limitedToNumberOfLines: numberOfLines))

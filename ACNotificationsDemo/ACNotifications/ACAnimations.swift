@@ -11,27 +11,27 @@ import UIKit
 
 class ACAnimationSlideDown: ACAnimationSimple {
     
-    var duration: NSTimeInterval = 5
+    var duration: TimeInterval = 5
     let hasInOutAnimation: Bool = false
     
-    func preAnimation(view: UIView) {
-        view.transform = CGAffineTransformMakeTranslation(0, -view.bounds.size.height)
+    func preAnimation(_ view: UIView) {
+        view.transform = CGAffineTransform(translationX: 0, y: -view.bounds.size.height)
     }
     
-    func inAnimation(view: UIView) {
-        view.transform = CGAffineTransformMakeTranslation(0, 0)
+    func inAnimation(_ view: UIView) {
+        view.transform = CGAffineTransform(translationX: 0, y: 0)
     }
     
-    func outAnimation(view: UIView) {
-        view.transform = CGAffineTransformMakeTranslation(0, -view.bounds.size.height)
+    func outAnimation(_ view: UIView) {
+        view.transform = CGAffineTransform(translationX: 0, y: -view.bounds.size.height)
     }
 }
 
 class ACAnimationLog: ACAnimationSimple {
-    var duration: NSTimeInterval = 3
+    var duration: TimeInterval = 3
     let hasInOutAnimation: Bool = true
     
-    func preAnimation(view: UIView) { view.alpha = 0; print(NSDate(), "ACAnimation : preAnimation") }
-    func inAnimation(view: UIView) { view.alpha = 1; print(NSDate(), "ACAnimation : inAnimation") }
-    func outAnimation(view: UIView) { view.alpha = 0; print(NSDate(), "ACAnimation : outAnimation") }
+    func preAnimation(_ view: UIView) { view.alpha = 0; print(Date(), "ACAnimation : preAnimation") }
+    func inAnimation(_ view: UIView) { view.alpha = 1; print(Date(), "ACAnimation : inAnimation") }
+    func outAnimation(_ view: UIView) { view.alpha = 0; print(Date(), "ACAnimation : outAnimation") }
 }

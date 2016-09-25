@@ -11,11 +11,11 @@ import UIKit
 // MARK: - ACTask
 
 enum ACTaskState {
-    case Waiting
-    case Presenting
-    case Active
-    case Dismissing
-    case Finished
+    case waiting
+    case presenting
+    case active
+    case dismissing
+    case finished
 }
 
 protocol ACTask : class {
@@ -30,7 +30,7 @@ class ACTaskBase : ACTask {
     let notification: ACNotification
     let animation: ACAnimation
     let presenter: ACPresenter
-    var state: ACTaskState = .Waiting
+    var state: ACTaskState = .waiting
     
     init(notification: ACNotification, presenter: ACPresenter, animation: ACAnimation) {
         self.notification = notification
@@ -42,75 +42,75 @@ class ACTaskBase : ACTask {
 // MARK: - ACManager
 class ACManager {
     
-    private(set) var queue: [ACTask] = []
+    fileprivate(set) var queue: [ACTask] = []
     
     // MARK: Public methods
     
-    func addTask(task: ACTask){
-        guard task.state == .Waiting else { print("ACManager. Only .Waiting ACTask could be added to queue."); return }
+    func addTask(_ task: ACTask){
+        guard task.state == .waiting else { print("ACManager. Only .Waiting ACTask could be added to queue."); return }
         queue.append(task)
         presentTaskIfPossible(task)
     }
     
-    func dismissTask(task: ACTask) {
+    func dismissTask(_ task: ACTask) {
         dismissTaskIfPossible(task)
     }
     
-    func removeTask(task: ACTask) {
-        guard task.state == .Waiting || task.state == .Finished else {
+    func removeTask(_ task: ACTask) {
+        guard task.state == .waiting || task.state == .finished else {
             print("ACManager. Only .Waiting or .Finished ACTask could be removed from queue.")
             return
         }
-        if let index = queue.indexOf({$0 === task}) {
-            queue.removeAtIndex(index)
+        if let index = queue.index(where: {$0 === task}) {
+            queue.remove(at: index)
         }
     }
     
     // MARK: Queue methods
     
-    private func activeTaskForPresenter(presenter: ACPresenter) -> ACTask? {
-        for task in queue where task.presenter === presenter && task.state != .Waiting{ return task }
+    fileprivate func activeTaskForPresenter(_ presenter: ACPresenter) -> ACTask? {
+        for task in queue where task.presenter === presenter && task.state != .waiting{ return task }
         return nil
     }
     
-    private func waitingTaskForPresenter(presenter: ACPresenter) -> ACTask? {
-        for task in queue where task.presenter === presenter && task.state == .Waiting { return task }
+    fileprivate func waitingTaskForPresenter(_ presenter: ACPresenter) -> ACTask? {
+        for task in queue where task.presenter === presenter && task.state == .waiting { return task }
         return nil
     }
     
-    private func isUsedPresenter(presenter: ACPresenter) -> Bool {
+    fileprivate func isUsedPresenter(_ presenter: ACPresenter) -> Bool {
         return activeTaskForPresenter(presenter) != nil
     }
     
     // MARK: Tasks manipulation
     
-    private func presentTaskIfPossible(task: ACTask) {
-        guard task.state == .Waiting else { print("ACManager: Only .Waiting tasks could be presented."); return }
+    fileprivate func presentTaskIfPossible(_ task: ACTask) {
+        guard task.state == .waiting else { print("ACManager: Only .Waiting tasks could be presented."); return }
         guard !isUsedPresenter(task.presenter) else { return }
         
-        task.state = .Presenting
+        task.state = .presenting
         present(task) {
-            task.state = .Active
+            task.state = .active
         }
     }
     
-    private func dismissTaskIfPossible(task: ACTask) {
-        guard task.state == .Active else { print("ACManager. Only .Active ACTask could be dismissed."); return }
+    fileprivate func dismissTaskIfPossible(_ task: ACTask) {
+        guard task.state == .active else { print("ACManager. Only .Active ACTask could be dismissed."); return }
         
-        task.state = .Dismissing
+        task.state = .dismissing
         
-        if let newTask = waitingTaskForPresenter(task.presenter) where newTask.animation.hasInOutAnimation
+        if let newTask = waitingTaskForPresenter(task.presenter) , newTask.animation.hasInOutAnimation
         {
-            newTask.state = .Presenting
+            newTask.state = .presenting
             replace(task, newTask: newTask, completion: {
-                task.state = .Finished
+                task.state = .finished
                 self.removeTask(task)
-                newTask.state = .Active
+                newTask.state = .active
             })
         }
         else {
             dismiss(task, completion: {
-                task.state = .Finished
+                task.state = .finished
                 self.removeTask(task)
                 
                 if let newTask = self.waitingTaskForPresenter(task.presenter) {
@@ -122,7 +122,7 @@ class ACManager {
     
     // MARK: Animation methods
     
-    private func present(task: ACTask, completion:() -> Void) {
+    fileprivate func present(_ task: ACTask, completion:@escaping () -> Void) {
         
         let presenter = task.presenter
         let animation = task.animation
@@ -132,7 +132,7 @@ class ACManager {
         animation.animateIn(view: view, completion: { completion() })
     }
     
-    private func replace(oldTask: ACTask, newTask: ACTask, completion:() -> Void) {
+    fileprivate func replace(_ oldTask: ACTask, newTask: ACTask, completion:() -> Void) {
         
         precondition(oldTask.presenter === newTask.presenter, "ACManager: Presenters should be the same for replace animation.")
         precondition(newTask.animation.hasInOutAnimation, "ACManager: Animation does not support replacement.")
@@ -150,7 +150,7 @@ class ACManager {
         }
     }
     
-    private func dismiss(task: ACTask, completion:() -> Void) {
+    fileprivate func dismiss(_ task: ACTask, completion:@escaping () -> Void) {
         
         let presenter = task.presenter
         let animation = task.animation

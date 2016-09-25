@@ -15,23 +15,23 @@ protocol ACNotification {
 
 // MARK: - ACPresenter
 protocol ACPresenter: class {
-    func addView(view: UIView)
-    func removeView(view: UIView)
+    func addView(_ view: UIView)
+    func removeView(_ view: UIView)
 }
 
 // MARK: - ACAnimation
 protocol ACAnimation {
-    func animateIn (view view: UIView, completion:() -> Void)
-    func animateOut(view view: UIView, completion:() -> Void)
+    func animateIn (view: UIView, completion:@escaping () -> Void)
+    func animateOut(view: UIView, completion:@escaping () -> Void)
     
     var hasInOutAnimation: Bool { get } // Default is false (see extension below)
-    func animateInOut(view view: UIView, previousView: UIView, completion:() -> Void) // Does nothing by default (see extension below)
+    func animateInOut(view: UIView, previousView: UIView, completion:() -> Void) // Does nothing by default (see extension below)
 }
 
 // MARK: extension
 extension ACAnimation {
     var hasInOutAnimation: Bool { return false }
-    func animateInOut(view view: UIView, previousView: UIView, completion:() -> Void) {
+    func animateInOut(view: UIView, previousView: UIView, completion:() -> Void) {
         precondition(hasInOutAnimation, "ACNotifications: This method should never be called if hasInOutAnimation is false.")
     }
 }
@@ -39,34 +39,34 @@ extension ACAnimation {
 // MARK: - ACAnimationSimple
 protocol ACAnimationSimple: ACAnimation {
     
-    var duration: NSTimeInterval { get }
+    var duration: TimeInterval { get }
     var hasInOutAnimation: Bool { get }
-    func preAnimation(view: UIView) -> Void
-    func inAnimation (view: UIView) -> Void
-    func outAnimation(view: UIView) -> Void
+    func preAnimation(_ view: UIView) -> Void
+    func inAnimation (_ view: UIView) -> Void
+    func outAnimation(_ view: UIView) -> Void
 }
 
 extension ACAnimationSimple {
     
-    func animateIn(view view: UIView, completion:() -> Void) {
+    func animateIn(view: UIView, completion:@escaping () -> Void) {
         
         preAnimation(view)
-        UIView.animateWithDuration( duration,
+        UIView.animate( withDuration: duration,
                                     animations: { self.inAnimation(view) },
                                     completion: { _ in completion() })
     }
     
-    func animateOut(view view: UIView, completion:() -> Void) {
+    func animateOut(view: UIView, completion:@escaping () -> Void) {
         
-        UIView.animateWithDuration( duration,
+        UIView.animate( withDuration: duration,
                                     animations: { self.outAnimation(view) },
                                     completion: { _ in completion() })
     }
     
-    func animateInOut(view view: UIView, previousView: UIView, completion:() -> Void) {
+    func animateInOut(view: UIView, previousView: UIView, completion:@escaping () -> Void) {
         
         preAnimation(view)
-        UIView.animateWithDuration( duration,
+        UIView.animate( withDuration: duration,
                                     animations: {
                                         self.outAnimation(previousView)
                                         self.inAnimation(view) },

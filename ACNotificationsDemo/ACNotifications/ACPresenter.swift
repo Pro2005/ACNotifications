@@ -11,12 +11,12 @@ import UIKit
 
 
 class ACPresenterLog: ACPresenter {
-    func addView(view: UIView) {
-        print(NSDate(), "ACPresenter : addView")
-        UIApplication.sharedApplication().keyWindow?.addSubview(view)
+    func addView(_ view: UIView) {
+        print(Date(), "ACPresenter : addView")
+        UIApplication.shared.keyWindow?.addSubview(view)
     }
-    func removeView(view: UIView) {
-        print(NSDate(), "ACPresenter : removeView")
+    func removeView(_ view: UIView) {
+        print(Date(), "ACPresenter : removeView")
         view.removeFromSuperview()
     }
 }
@@ -28,33 +28,33 @@ class ACPresenterView: ACPresenter {
         presenterView = view
     }
     
-    func addView(view: UIView) {
+    func addView(_ view: UIView) {
         presenterView.addSubview(view)
         
         view.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint(item: view, attribute: .Leading, relatedBy: .Equal, toItem: presenterView, attribute: .Leading, multiplier: 1, constant: 0).active = true
+        NSLayoutConstraint(item: view, attribute: .leading, relatedBy: .equal, toItem: presenterView, attribute: .leading, multiplier: 1, constant: 0).isActive = true
 
-        NSLayoutConstraint(item: view, attribute: .Trailing, relatedBy: .Equal, toItem: presenterView, attribute: .Trailing, multiplier: 1, constant: 0).active = true
+        NSLayoutConstraint(item: view, attribute: .trailing, relatedBy: .equal, toItem: presenterView, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
         
-        NSLayoutConstraint(item: view, attribute: .Top, relatedBy: .Equal, toItem: presenterView, attribute: .Top, multiplier: 1, constant: 0).active = true
+        NSLayoutConstraint(item: view, attribute: .top, relatedBy: .equal, toItem: presenterView, attribute: .top, multiplier: 1, constant: 0).isActive = true
         
         presenterView.layoutSubviews()
     }
     
-    func removeView(view: UIView) {
+    func removeView(_ view: UIView) {
         view.removeFromSuperview()
     }
 }
 
 class ACPresenterStatusBar: ACPresenter {
-    func addView(view: UIView) { }
-    func removeView(view: UIView) { }
+    func addView(_ view: UIView) { }
+    func removeView(_ view: UIView) { }
 }
 
 class ACPresenterNavigationBar: ACPresenter {
     init(navigationBar: UINavigationBar) { }
-    func addView(view: UIView) { }
-    func removeView(view: UIView) { }
+    func addView(_ view: UIView) { }
+    func removeView(_ view: UIView) { }
 }
 
