@@ -27,7 +27,7 @@ class ViewController: UIViewController {
         notification.backgroundColor = UIColor.red
         presentView.clipsToBounds = true
         
-        manager.addNotification(notification, delay: 5, presenter: presenter, animation: animation)
+        let _ = manager.add(notification: notification, delay: 5, presenter: presenter, animation: animation)
 //        presenter.addView(notification.notificationView)
         
 //        animation.animateIn(view: notification.notificationView) {
