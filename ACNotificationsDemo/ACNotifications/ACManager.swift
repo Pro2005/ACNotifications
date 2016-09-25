@@ -8,156 +8,112 @@
 import Foundation
 import UIKit
 
-// MARK: - ACTask
 
-enum ACTaskState {
+enum ACNotificationState {
     case waiting
     case presenting
-    case active
+    // dismissBlock - a block that could be called if notification wants to dismiss itself. Is valid only if state is .active.
+    // Notification could decide itself when it should be dismissed. Example: the same notification with short or long text could
+    // prefer to show itself with different durability depending on the text length
+    case active(dismissBlock: () -> Void)
     case dismissing
     case finished
 }
 
-protocol ACTask : class {
-    var notification: ACNotification { get }
-    var animation: ACAnimation { get }
-    var presenter: ACPresenter { get }
-    var state: ACTaskState { get set }
+// MARK: - Protocols
+
+protocol ACStateListenProtocol {
+    // newState - a new state of notification
+    func stateChanged(newState: ACNotificationState)
 }
 
-class ACTaskBase : ACTask {
-    
-    let notification: ACNotification
-    let animation: ACAnimation
-    let presenter: ACPresenter
-    var state: ACTaskState = .waiting
-    
-    init(notification: ACNotification, presenter: ACPresenter, animation: ACAnimation) {
-        self.notification = notification
-        self.presenter = presenter
-        self.animation = animation
-    }
+protocol ACTaskDismissProtocol : class {
+    func dismiss(task: ACTask)
 }
 
-// MARK: - ACManager
-class ACManager {
+// MARK: -
+
+// ACTaskRich supports ACNotifications with ACStateListenProtocol
+class ACTaskRich: ACTaskBase {
     
-    fileprivate(set) var queue: [ACTask] = []
+    weak var delegate: ACTaskDismissProtocol?
+    var delay: TimeInterval?
     
-    // MARK: Public methods
-    
-    func add(task: ACTask){
-        guard task.state == .waiting else { print("ACManager. Only .waiting ACTask could be added to queue."); return }
-        queue.append(task)
-        presentIfPossible(task: task)
-    }
-    
-    func dismiss(task: ACTask) {
-        dismissIfPossible(task: task)
-    }
-    
-    func remove(task: ACTask) {
-        guard task.state == .waiting || task.state == .finished else {
-            print("ACManager. Only .waiting or .finished ACTask could be removed from queue.")
-            return
-        }
-        if let index = queue.index(where: {$0 === task}) {
-            queue.remove(at: index)
-        }
-    }
-    
-    // MARK: Queue methods
-    
-    fileprivate func activeTask(presenter: ACPresenter) -> ACTask? {
-        return queue.first { $0.presenter === presenter && $0.state != .waiting }
-    }
-    
-    fileprivate func waitingTask(presenter: ACPresenter) -> ACTask? {
-        return queue.first { $0.presenter === presenter && $0.state == .waiting }
-    }
-    
-    fileprivate func isUsed(presenter: ACPresenter) -> Bool {
-        return activeTask(presenter: presenter) != nil
-    }
-    
-    // MARK: Tasks manipulation
-    
-    fileprivate func presentIfPossible(task: ACTask) {
-        guard task.state == .waiting else { print("ACManager: Only .waiting tasks could be presented."); return }
-        guard !isUsed(presenter: task.presenter) else { return }
-        
-        task.state = .presenting
-        present(task: task) {
-            task.state = .active
-        }
-    }
-    
-    fileprivate func dismissIfPossible(task: ACTask) {
-        guard task.state == .active else { print("ACManager. Only .Active ACTask could be dismissed."); return }
-        
-        task.state = .dismissing
-        
-        if let newTask = waitingTask(presenter: task.presenter) , newTask.animation.hasInOutAnimation
-        {
-            newTask.state = .presenting
-            replace(oldTask: task, newTask: newTask, completion: {
-                task.state = .finished
-                self.remove(task: task)
-                newTask.state = .active
-            })
-        }
-        else {
-            dismiss(task: task, completion: {
-                task.state = .finished
-                self.remove(task: task)
-                
-                if let newTask = self.waitingTask(presenter: task.presenter) {
-                    self.presentIfPossible(task: newTask)
+    fileprivate func notificationState() -> ACNotificationState {
+        switch state {
+        case .waiting: return .waiting
+        case .presenting: return .presenting
+        case .active:
+            let dismissBlock: () -> Void = { [weak self] in
+                guard let this = self else { return }
+                DispatchQueue.main.async {
+                    this.delegate?.dismiss(task: this)
                 }
-            })
+            }
+            return .active(dismissBlock: dismissBlock)
+        case .dismissing: return .dismissing
+        case .finished: return .finished
         }
     }
     
-    // MARK: Animation methods
-    
-    fileprivate func present(task: ACTask, completion:@escaping () -> Void) {
-        
-        let presenter = task.presenter
-        let animation = task.animation
-        let view = task.notification.notificationView
-        
-        presenter.add(view: view)
-        animation.animateIn(view: view, completion: { completion() })
-    }
-    
-    fileprivate func replace(oldTask: ACTask, newTask: ACTask, completion:() -> Void) {
-        
-        precondition(oldTask.presenter === newTask.presenter, "ACManager: Presenters should be the same for replace animation.")
-        precondition(newTask.animation.hasInOutAnimation, "ACManager: Animation does not support replacement.")
-        
-        let presenter = oldTask.presenter
-        let oldView = oldTask.notification.notificationView
-        let animation = newTask.animation
-        let newView = newTask.notification.notificationView
-        
-        presenter.add(view: newView)
-        animation.animateInOut(view: newView, previousView: oldView) {
-            
-            presenter.remove(view: oldView)
-            completion()
+    override var state: ACTaskState {
+        didSet {
+            if let notification = notification as? ACStateListenProtocol {
+                let newNotificationState = notificationState()
+                DispatchQueue.main.async {
+                    notification.stateChanged(newState: newNotificationState)
+                }
+            }
+            if state == .active, let delay = delay {
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delay) { [weak self] in
+                    guard let this = self else { return }
+                    this.delegate?.dismiss(task: this)
+                }
+            }
         }
     }
     
-    fileprivate func dismiss(task: ACTask, completion:@escaping () -> Void) {
-        
-        let presenter = task.presenter
-        let animation = task.animation
-        let view = task.notification.notificationView
-        
-        animation.animateOut(view: view, completion: {
-            
-            presenter.remove(view: view)
-            completion()
-        })
+    init(notification: ACNotification, presenter: ACPresenter, animation: ACAnimation, delay: TimeInterval? = nil) {
+        self.delay = delay
+        super.init(notification: notification, presenter: presenter, animation: animation)
     }
 }
+
+// MARK: -
+
+// Supports any ACTasks. Has default ACPresenter, ACAnimation and delay time. Supports ACTaskRich's dismiss functionality.
+class ACManager : ACManagerBase, ACTaskDismissProtocol {
+
+    var defaultPresenter: ACPresenter
+    var defaultAnimation: ACAnimation
+    var defaultDelay: TimeInterval?
+
+    init(defaultPresenter: ACPresenter = ACPresenterStatusBar(), defaultAnimation: ACAnimation = ACAnimationSlideDown()) {
+        self.defaultPresenter = defaultPresenter
+        self.defaultAnimation = defaultAnimation
+    }
+    
+    func add(task: ACTaskRich) {
+        task.delegate = self
+        super.add(task: task)
+    }
+    
+    // Adds ACTaskRich with specified or default parameters.
+    func add(notification: ACNotification,
+             delay: TimeInterval? = nil,
+             presenter: ACPresenter? = nil,
+             animation: ACAnimation? = nil) -> ACTaskRich {
+
+        let task = ACTaskRich(notification: notification,
+                              presenter: presenter ?? defaultPresenter,
+                              animation: animation ?? defaultAnimation,
+                              delay: delay ?? defaultDelay)
+        add(task: task)
+        return task
+    }
+}
+
+//Пример: Анимация, требующая дополнительной инфы (наезжающий на нотификешн статус бар)
+//С приоритетом
+//Presenter поддерживающий несколько нотификейшенов одновременно
+//Можно ли требование наследования от class заменить на требование Equitable без необходимости дополнительного кода в presenters и tasks?

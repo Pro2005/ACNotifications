@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 // MARK: - ACNotification
 protocol ACNotification {
     var notificationView: UIView { get }

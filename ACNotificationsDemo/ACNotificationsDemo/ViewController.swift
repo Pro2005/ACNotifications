@@ -12,7 +12,7 @@ class ViewController: UIViewController {
 
     @IBOutlet var presentView: UIView!
     
-    let manager = ACManagerRich()
+    let manager = ACManager()
     let animation = ACAnimationSlideDown()
     var presenter: ACPresenterView!
     let notification = UILabelEdged()
