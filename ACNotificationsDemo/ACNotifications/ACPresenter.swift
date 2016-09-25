@@ -11,11 +11,11 @@ import UIKit
 
 
 class ACPresenterLog: ACPresenter {
-    func addView(_ view: UIView) {
+    func add(view: UIView) {
         print(Date(), "ACPresenter : addView")
         UIApplication.shared.keyWindow?.addSubview(view)
     }
-    func removeView(_ view: UIView) {
+    func remove(view: UIView) {
         print(Date(), "ACPresenter : removeView")
         view.removeFromSuperview()
     }
@@ -28,7 +28,7 @@ class ACPresenterView: ACPresenter {
         presenterView = view
     }
     
-    func addView(_ view: UIView) {
+    func add(view: UIView) {
         presenterView.addSubview(view)
         
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -42,19 +42,19 @@ class ACPresenterView: ACPresenter {
         presenterView.layoutSubviews()
     }
     
-    func removeView(_ view: UIView) {
+    func remove(view: UIView) {
         view.removeFromSuperview()
     }
 }
 
 class ACPresenterStatusBar: ACPresenter {
-    func addView(_ view: UIView) { }
-    func removeView(_ view: UIView) { }
+    func add(view: UIView) { }
+    func remove(view: UIView) { }
 }
 
 class ACPresenterNavigationBar: ACPresenter {
     init(navigationBar: UINavigationBar) { }
-    func addView(_ view: UIView) { }
-    func removeView(_ view: UIView) { }
+    func add(view: UIView) { }
+    func remove(view: UIView) { }
 }
 

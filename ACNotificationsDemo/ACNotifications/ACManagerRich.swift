@@ -19,7 +19,7 @@ enum ACNotificationState {
 }
 
 protocol ACStateChangedProtocol {
-    func stateChanged(_ state: ACNotificationState)
+    func stateChanged(newState: ACNotificationState)
 }
 
 protocol ACDismissProtocol : class {
@@ -29,7 +29,7 @@ protocol ACDismissProtocol : class {
 // MARK: - ACTaskDismissProtocol
 
 protocol ACTaskDismissProtocol : class {
-    func dismissTask(_ task: ACTask)
+    func dismiss(task: ACTask)
 }
 
 // MARK: - ACTaskRich
@@ -55,17 +55,17 @@ class ACTaskRich : ACTask {
                 case .dismissing: notificationState = .dismissing
                 case .finished: notificationState = .finished
                 }
-                notification.stateChanged(notificationState)
+                notification.stateChanged(newState: notificationState)
             }
             if state == .active, let delay = delay {
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC))
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delay)
                 { [weak self] in self?.dismissSelf() }
             }
         }
     }
 
     func dismissSelf() {
-        delegate?.dismissTask(self)
+        delegate?.dismiss(task: self)
     }
     
     init(notification: ACNotification, presenter: ACPresenter, animation: ACAnimation, delay: TimeInterval? = nil) {
@@ -96,22 +96,22 @@ class ACManagerRich : ACManager, ACTaskDismissProtocol {
         self.defaultAnimation = defaultAnimation
     }
     
-    func addTask(_ task: ACTaskRich) {
+    func add(task: ACTaskRich) {
         task.delegate = self
-        super.addTask(task)
+        super.add(task: task)
     }
     
     // Adds ACTaskRich with specified or default parameters.
-    func addNotification(_ notification: ACNotification,
-                         delay: TimeInterval? = nil,
-                         presenter: ACPresenter? = nil,
-                         animation: ACAnimation? = nil) -> ACTaskRich {
+    func add(notification: ACNotification,
+             delay: TimeInterval? = nil,
+             presenter: ACPresenter? = nil,
+             animation: ACAnimation? = nil) -> ACTaskRich {
 
         let task = ACTaskRich(notification: notification,
                               presenter: presenter ?? defaultPresenter,
                               animation: animation ?? defaultAnimation,
                               delay: delay ?? defaultDelay)
-        addTask(task)
+        add(task: task)
         return task
     }
 }

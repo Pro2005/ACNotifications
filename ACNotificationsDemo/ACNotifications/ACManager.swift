@@ -46,19 +46,19 @@ class ACManager {
     
     // MARK: Public methods
     
-    func addTask(_ task: ACTask){
-        guard task.state == .waiting else { print("ACManager. Only .Waiting ACTask could be added to queue."); return }
+    func add(task: ACTask){
+        guard task.state == .waiting else { print("ACManager. Only .waiting ACTask could be added to queue."); return }
         queue.append(task)
-        presentTaskIfPossible(task)
+        presentIfPossible(task: task)
     }
     
-    func dismissTask(_ task: ACTask) {
-        dismissTaskIfPossible(task)
+    func dismiss(task: ACTask) {
+        dismissIfPossible(task: task)
     }
     
-    func removeTask(_ task: ACTask) {
+    func remove(task: ACTask) {
         guard task.state == .waiting || task.state == .finished else {
-            print("ACManager. Only .Waiting or .Finished ACTask could be removed from queue.")
+            print("ACManager. Only .waiting or .finished ACTask could be removed from queue.")
             return
         }
         if let index = queue.index(where: {$0 === task}) {
@@ -68,53 +68,51 @@ class ACManager {
     
     // MARK: Queue methods
     
-    fileprivate func activeTaskForPresenter(_ presenter: ACPresenter) -> ACTask? {
-        for task in queue where task.presenter === presenter && task.state != .waiting{ return task }
-        return nil
+    fileprivate func activeTask(presenter: ACPresenter) -> ACTask? {
+        return queue.first { $0.presenter === presenter && $0.state != .waiting }
     }
     
-    fileprivate func waitingTaskForPresenter(_ presenter: ACPresenter) -> ACTask? {
-        for task in queue where task.presenter === presenter && task.state == .waiting { return task }
-        return nil
+    fileprivate func waitingTask(presenter: ACPresenter) -> ACTask? {
+        return queue.first { $0.presenter === presenter && $0.state == .waiting }
     }
     
-    fileprivate func isUsedPresenter(_ presenter: ACPresenter) -> Bool {
-        return activeTaskForPresenter(presenter) != nil
+    fileprivate func isUsed(presenter: ACPresenter) -> Bool {
+        return activeTask(presenter: presenter) != nil
     }
     
     // MARK: Tasks manipulation
     
-    fileprivate func presentTaskIfPossible(_ task: ACTask) {
-        guard task.state == .waiting else { print("ACManager: Only .Waiting tasks could be presented."); return }
-        guard !isUsedPresenter(task.presenter) else { return }
+    fileprivate func presentIfPossible(task: ACTask) {
+        guard task.state == .waiting else { print("ACManager: Only .waiting tasks could be presented."); return }
+        guard !isUsed(presenter: task.presenter) else { return }
         
         task.state = .presenting
-        present(task) {
+        present(task: task) {
             task.state = .active
         }
     }
     
-    fileprivate func dismissTaskIfPossible(_ task: ACTask) {
+    fileprivate func dismissIfPossible(task: ACTask) {
         guard task.state == .active else { print("ACManager. Only .Active ACTask could be dismissed."); return }
         
         task.state = .dismissing
         
-        if let newTask = waitingTaskForPresenter(task.presenter) , newTask.animation.hasInOutAnimation
+        if let newTask = waitingTask(presenter: task.presenter) , newTask.animation.hasInOutAnimation
         {
             newTask.state = .presenting
-            replace(task, newTask: newTask, completion: {
+            replace(oldTask: task, newTask: newTask, completion: {
                 task.state = .finished
-                self.removeTask(task)
+                self.remove(task: task)
                 newTask.state = .active
             })
         }
         else {
-            dismiss(task, completion: {
+            dismiss(task: task, completion: {
                 task.state = .finished
-                self.removeTask(task)
+                self.remove(task: task)
                 
-                if let newTask = self.waitingTaskForPresenter(task.presenter) {
-                    self.presentTaskIfPossible(newTask)
+                if let newTask = self.waitingTask(presenter: task.presenter) {
+                    self.presentIfPossible(task: newTask)
                 }
             })
         }
@@ -122,17 +120,17 @@ class ACManager {
     
     // MARK: Animation methods
     
-    fileprivate func present(_ task: ACTask, completion:@escaping () -> Void) {
+    fileprivate func present(task: ACTask, completion:@escaping () -> Void) {
         
         let presenter = task.presenter
         let animation = task.animation
         let view = task.notification.notificationView
         
-        presenter.addView(view)
+        presenter.add(view: view)
         animation.animateIn(view: view, completion: { completion() })
     }
     
-    fileprivate func replace(_ oldTask: ACTask, newTask: ACTask, completion:() -> Void) {
+    fileprivate func replace(oldTask: ACTask, newTask: ACTask, completion:() -> Void) {
         
         precondition(oldTask.presenter === newTask.presenter, "ACManager: Presenters should be the same for replace animation.")
         precondition(newTask.animation.hasInOutAnimation, "ACManager: Animation does not support replacement.")
@@ -142,15 +140,15 @@ class ACManager {
         let animation = newTask.animation
         let newView = newTask.notification.notificationView
         
-        presenter.addView(newView)
+        presenter.add(view: newView)
         animation.animateInOut(view: newView, previousView: oldView) {
             
-            presenter.removeView(oldView)
+            presenter.remove(view: oldView)
             completion()
         }
     }
     
-    fileprivate func dismiss(_ task: ACTask, completion:@escaping () -> Void) {
+    fileprivate func dismiss(task: ACTask, completion:@escaping () -> Void) {
         
         let presenter = task.presenter
         let animation = task.animation
@@ -158,7 +156,7 @@ class ACManager {
         
         animation.animateOut(view: view, completion: {
             
-            presenter.removeView(view)
+            presenter.remove(view: view)
             completion()
         })
     }

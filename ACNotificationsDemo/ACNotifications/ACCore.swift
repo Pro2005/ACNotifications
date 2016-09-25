@@ -15,8 +15,8 @@ protocol ACNotification {
 
 // MARK: - ACPresenter
 protocol ACPresenter: class {
-    func addView(_ view: UIView)
-    func removeView(_ view: UIView)
+    func add(view: UIView)
+    func remove(view: UIView)
 }
 
 // MARK: - ACAnimation
