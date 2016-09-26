@@ -10,18 +10,18 @@ import UIKit
 
 
 // MARK: - ACNotification
-protocol ACNotification {
+public protocol ACNotification {
     var notificationView: UIView { get }
 }
 
 // MARK: - ACPresenter
-protocol ACPresenter: class {
+public protocol ACPresenter: class {
     func add(view: UIView)
     func remove(view: UIView)
 }
 
 // MARK: - ACAnimation
-protocol ACAnimation {
+public protocol ACAnimation {
     func animateIn (view: UIView, completion:@escaping () -> Void)
     func animateOut(view: UIView, completion:@escaping () -> Void)
     
@@ -31,14 +31,14 @@ protocol ACAnimation {
 
 // MARK: extension
 extension ACAnimation {
-    var hasInOutAnimation: Bool { return false }
-    func animateInOut(view: UIView, previousView: UIView, completion:() -> Void) {
+    public var hasInOutAnimation: Bool { return false }
+    public func animateInOut(view: UIView, previousView: UIView, completion:() -> Void) {
         precondition(hasInOutAnimation, "ACNotifications: This method should never be called if hasInOutAnimation is false.")
     }
 }
 
 // MARK: - ACAnimationSimple
-protocol ACAnimationSimple: ACAnimation {
+public protocol ACAnimationSimple: ACAnimation {
     
     var duration: TimeInterval { get }
     var hasInOutAnimation: Bool { get }
@@ -49,7 +49,7 @@ protocol ACAnimationSimple: ACAnimation {
 
 extension ACAnimationSimple {
     
-    func animateIn(view: UIView, completion:@escaping () -> Void) {
+    public func animateIn(view: UIView, completion:@escaping () -> Void) {
         
         preAnimation(view)
         UIView.animate( withDuration: duration,
@@ -57,7 +57,7 @@ extension ACAnimationSimple {
                                     completion: { _ in completion() })
     }
     
-    func animateOut(view: UIView, completion:@escaping () -> Void) {
+    public func animateOut(view: UIView, completion:@escaping () -> Void) {
         
         UIView.animate( withDuration: duration,
                                     animations: { self.outAnimation(view) },

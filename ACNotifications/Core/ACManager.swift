@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 
-enum ACNotificationState {
+public enum ACNotificationState {
     case waiting
     case presenting
     // dismissBlock - a block that could be called if notification wants to dismiss itself. Is valid only if state is .active.
@@ -22,24 +22,25 @@ enum ACNotificationState {
 
 // MARK: - Protocols
 
-protocol ACStateListenProtocol {
+public protocol ACStateListenProtocol {
     // newState - a new state of notification
     func stateChanged(newState: ACNotificationState)
 }
 
-protocol ACTaskDismissProtocol : class {
+public protocol ACTaskDismissProtocol : class {
     func dismiss(task: ACTask)
 }
 
 // MARK: -
 
 // ACTaskRich supports ACNotifications with ACStateListenProtocol
-class ACTaskRich: ACTaskBase {
+//TODO: Может попытаться заимплементить через протоколы с расширением
+open class ACTaskRich: ACTaskBase {
     
-    weak var delegate: ACTaskDismissProtocol?
-    var delay: TimeInterval?
+    open weak var delegate: ACTaskDismissProtocol?
+    open var delay: TimeInterval?
     
-    fileprivate func notificationState() -> ACNotificationState {
+    open func notificationState() -> ACNotificationState {
         switch state {
         case .waiting: return .waiting
         case .presenting: return .presenting
@@ -56,7 +57,7 @@ class ACTaskRich: ACTaskBase {
         }
     }
     
-    override var state: ACTaskState {
+    override open var state: ACTaskState {
         didSet {
             if let notification = notification as? ACStateListenProtocol {
                 let newNotificationState = notificationState()
@@ -73,7 +74,7 @@ class ACTaskRich: ACTaskBase {
         }
     }
     
-    init(notification: ACNotification, presenter: ACPresenter, animation: ACAnimation, delay: TimeInterval? = nil) {
+    public init(notification: ACNotification, presenter: ACPresenter, animation: ACAnimation, delay: TimeInterval? = nil) {
         self.delay = delay
         super.init(notification: notification, presenter: presenter, animation: animation)
     }
@@ -82,24 +83,24 @@ class ACTaskRich: ACTaskBase {
 // MARK: -
 
 // Supports any ACTasks. Has default ACPresenter, ACAnimation and delay time. Supports ACTaskRich's dismiss functionality.
-class ACManager : ACManagerBase, ACTaskDismissProtocol {
+open class ACManager : ACManagerBase, ACTaskDismissProtocol {
 
-    var defaultPresenter: ACPresenter
-    var defaultAnimation: ACAnimation
-    var defaultDelay: TimeInterval?
+    open var defaultPresenter: ACPresenter
+    open var defaultAnimation: ACAnimation
+    open var defaultDelay: TimeInterval?
 
-    init(defaultPresenter: ACPresenter = ACPresenterLog(), defaultAnimation: ACAnimation = ACAnimationSlideDown()) {
+    public init(defaultPresenter: ACPresenter = ACPresenterLog(), defaultAnimation: ACAnimation = ACAnimationSlideDown()) {
         self.defaultPresenter = defaultPresenter
         self.defaultAnimation = defaultAnimation
     }
     
-    func add(task: ACTaskRich) {
+    open func add(task: ACTaskRich) {
         task.delegate = self
         super.add(task: task)
     }
     
     // Adds ACTaskRich with specified or default parameters.
-    func add(notification: ACNotification,
+    open func add(notification: ACNotification,
              delay: TimeInterval? = nil,
              presenter: ACPresenter? = nil,
              animation: ACAnimation? = nil) -> ACTaskRich {

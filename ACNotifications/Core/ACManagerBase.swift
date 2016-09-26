@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 
-enum ACTaskState {
+public enum ACTaskState {
     case waiting
     case presenting
     case active
@@ -19,21 +19,21 @@ enum ACTaskState {
 
 // MARK: -
 
-protocol ACTask : class {
+public protocol ACTask : class {
     var notification: ACNotification { get }
     var animation: ACAnimation { get }
     var presenter: ACPresenter { get }
     var state: ACTaskState { get set }
 }
 
-class ACTaskBase : ACTask {
+open class ACTaskBase : ACTask {
     
-    let notification: ACNotification
-    let animation: ACAnimation
-    let presenter: ACPresenter
-    var state: ACTaskState = .waiting
+    open let notification: ACNotification
+    open let animation: ACAnimation
+    open let presenter: ACPresenter
+    open var state: ACTaskState = .waiting
     
-    init(notification: ACNotification, presenter: ACPresenter, animation: ACAnimation) {
+    public init(notification: ACNotification, presenter: ACPresenter, animation: ACAnimation) {
         self.notification = notification
         self.presenter = presenter
         self.animation = animation
@@ -41,23 +41,23 @@ class ACTaskBase : ACTask {
 }
 
 // MARK: -
-class ACManagerBase {
+open class ACManagerBase {
     
-    fileprivate(set) var queue: [ACTask] = []
+    open fileprivate(set) var queue: [ACTask] = []
     
     // MARK: Public methods
     
-    func add(task: ACTask){
+    open func add(task: ACTask){
         guard task.state == .waiting else { print("ACManager. Only .waiting ACTask could be added to queue."); return }
         queue.append(task)
         presentIfPossible(task: task)
     }
     
-    func dismiss(task: ACTask) {
+    open func dismiss(task: ACTask) {
         dismissIfPossible(task: task)
     }
     
-    func remove(task: ACTask) {
+    open func remove(task: ACTask) {
         guard task.state == .waiting || task.state == .finished else {
             print("ACManager. Only .waiting or .finished ACTask could be removed from queue.")
             return
@@ -69,15 +69,15 @@ class ACManagerBase {
     
     // MARK: Queue methods
     
-    fileprivate func activeTask(presenter: ACPresenter) -> ACTask? {
+    open func activeTask(presenter: ACPresenter) -> ACTask? {
         return queue.first { $0.presenter === presenter && $0.state != .waiting }
     }
     
-    fileprivate func waitingTask(presenter: ACPresenter) -> ACTask? {
+    open func waitingTask(presenter: ACPresenter) -> ACTask? {
         return queue.first { $0.presenter === presenter && $0.state == .waiting }
     }
     
-    fileprivate func isUsed(presenter: ACPresenter) -> Bool {
+    open func isUsed(presenter: ACPresenter) -> Bool {
         return activeTask(presenter: presenter) != nil
     }
     

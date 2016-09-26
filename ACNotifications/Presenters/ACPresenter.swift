@@ -10,25 +10,25 @@ import Foundation
 import UIKit
 
 
-class ACPresenterLog: ACPresenter {
-    func add(view: UIView) {
+open class ACPresenterLog: ACPresenter {
+    open func add(view: UIView) {
         print(Date(), "ACPresenter : addView")
         UIApplication.shared.keyWindow?.addSubview(view)
     }
-    func remove(view: UIView) {
+    open func remove(view: UIView) {
         print(Date(), "ACPresenter : removeView")
         view.removeFromSuperview()
     }
 }
 
-class ACPresenterView: ACPresenter {
-    let presenterView: UIView
+open class ACPresenterView: ACPresenter {
+    open let presenterView: UIView
     
-    init(view: UIView) {
+    public init(view: UIView) {
         presenterView = view
     }
     
-    func add(view: UIView) {
+    open func add(view: UIView) {
         presenterView.addSubview(view)
         
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -42,24 +42,24 @@ class ACPresenterView: ACPresenter {
         presenterView.layoutSubviews()
     }
     
-    func remove(view: UIView) {
+    open func remove(view: UIView) {
         view.removeFromSuperview()
     }
 }
 
-class ACViewControllerWithStatusBar: UIViewController {
-    override var prefersStatusBarHidden: Bool {
+open class ACViewControllerWithStatusBar: UIViewController {
+    override open var prefersStatusBarHidden: Bool {
         return false
     }
 }
 
-class ACPresenterStatusBar: ACPresenter {
+open class ACPresenterStatusBar: ACPresenter {
     
     fileprivate let window: UIWindow
     fileprivate let viewController = ACViewControllerWithStatusBar()
     fileprivate let presenterView: UIView
     
-    init() {
+    public init() {
         // Abous status bar size
         //http://stackoverflow.com/questions/31581526/ios9-covering-status-bar-with-custom-uiwindow-wrong-position?rq=1
         var rect = UIScreen.main.bounds
@@ -74,7 +74,7 @@ class ACPresenterStatusBar: ACPresenter {
         
     }
     
-    func add(view: UIView) {
+    open func add(view: UIView) {
         presenterView.addSubview(view)
         
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -88,14 +88,14 @@ class ACPresenterStatusBar: ACPresenter {
         presenterView.layoutSubviews()
     }
     
-    func remove(view: UIView) {
+    open func remove(view: UIView) {
         view.removeFromSuperview()
     }
 }
 
-class ACPresenterNavigationBar: ACPresenter {
-    init(navigationBar: UINavigationBar) { }
-    func add(view: UIView) { }
-    func remove(view: UIView) { }
+open class ACPresenterNavigationBar: ACPresenter {
+    public init(navigationBar: UINavigationBar) { }
+    open func add(view: UIView) { }
+    open func remove(view: UIView) { }
 }
 

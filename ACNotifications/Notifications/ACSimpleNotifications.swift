@@ -9,18 +9,18 @@
 import Foundation
 import UIKit
 
-class ACNotificationLog: ACNotification {
+open class ACNotificationLog: ACNotification {
     
-    var notificationView: UIView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+    open var notificationView: UIView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
     var notificationDuration: TimeInterval = 5
     func stateChanged(_ state: ACNotificationState) {
         print(Date(), "ACNotification : stateChanged(\(state))")
     }
 }
 
-class ACViewNotification: ACNotification {
+open class ACViewNotification: ACNotification {
     
-    fileprivate(set) var notificationView: UIView
+    fileprivate(set) open var notificationView: UIView
     
     init(view: UIView) {
         notificationView = view
@@ -28,11 +28,11 @@ class ACViewNotification: ACNotification {
 }
 
 extension UIView: ACNotification {
-    var notificationView: UIView { return self }
+    open var notificationView: UIView { return self }
 }
 
-class UILabelEdged: UILabel {
-    override var intrinsicContentSize : CGSize {
+open class UILabelEdged: UILabel {
+    override open var intrinsicContentSize : CGSize {
         let size = super.intrinsicContentSize
         return CGSize(width: size.width - 40.0, height: size.height + 40)
     }
@@ -44,15 +44,16 @@ class UILabelEdged: UILabel {
 //    }
 }
 
-class SlimNotification: UILabel {
-    init() {
+open class SlimNotification: UILabel {
+    
+    public init() {
         super.init(frame: CGRect.zero)
         numberOfLines = 1
         textAlignment = .center
         backgroundColor = UIColor.green
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 //    override var intrinsicContentSize : CGSize {

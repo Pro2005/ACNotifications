@@ -9,33 +9,33 @@
 import Foundation
 import UIKit
 
-class ACAnimationSlideDown: ACAnimationSimple {
+open class ACAnimationSlideDown: ACAnimationSimple {
     
-    let duration: TimeInterval
-    let hasInOutAnimation: Bool = false
+    open let duration: TimeInterval
+    open let hasInOutAnimation: Bool = false
     
-    init(duration: TimeInterval = 0.25) {
+    public init(duration: TimeInterval = 0.25) {
         self.duration = duration
     }
     
-    func preAnimation(_ view: UIView) {
+    open func preAnimation(_ view: UIView) {
         view.transform = CGAffineTransform(translationX: 0, y: -view.bounds.size.height)
     }
     
-    func inAnimation(_ view: UIView) {
+    open func inAnimation(_ view: UIView) {
         view.transform = CGAffineTransform(translationX: 0, y: 0)
     }
     
-    func outAnimation(_ view: UIView) {
+    open func outAnimation(_ view: UIView) {
         view.transform = CGAffineTransform(translationX: 0, y: -view.bounds.size.height)
     }
 }
 
-class ACAnimationLog: ACAnimationSimple {
-    var duration: TimeInterval = 3
-    let hasInOutAnimation: Bool = true
+open class ACAnimationLog: ACAnimationSimple {
+    open var duration: TimeInterval = 3
+    open let hasInOutAnimation: Bool = true
     
-    func preAnimation(_ view: UIView) { view.alpha = 0; print(Date(), "ACAnimation : preAnimation") }
-    func inAnimation(_ view: UIView) { view.alpha = 1; print(Date(), "ACAnimation : inAnimation") }
-    func outAnimation(_ view: UIView) { view.alpha = 0; print(Date(), "ACAnimation : outAnimation") }
+    open func preAnimation(_ view: UIView) { view.alpha = 0; print(Date(), "ACAnimation : preAnimation") }
+    open func inAnimation(_ view: UIView) { view.alpha = 1; print(Date(), "ACAnimation : inAnimation") }
+    open func outAnimation(_ view: UIView) { view.alpha = 0; print(Date(), "ACAnimation : outAnimation") }
 }
