@@ -12,7 +12,7 @@ ACNotifications allows you to easily show any UIViews (images, controls, complex
   s.platform     = :ios
   s.ios.deployment_target = "8.0"
   s.source       = { :git => "https://github.com/Avtolic/ACNotifications.git", :tag => "#{s.version}" }
-  s.source_files  = "ACNotifications/*.swift"
+  s.source_files  = "ACNotifications/*/*.swift"
   s.framework  = "UIKit"
 
 end
