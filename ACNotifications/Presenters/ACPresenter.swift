@@ -60,7 +60,7 @@ open class ACPresenterStatusBar: ACPresenter {
     fileprivate let presenterView: UIView
     
     public init() {
-        // Abous status bar size
+        // About status bar size
         //http://stackoverflow.com/questions/31581526/ios9-covering-status-bar-with-custom-uiwindow-wrong-position?rq=1
         var rect = UIScreen.main.bounds
         rect.size.height = 20
@@ -70,6 +70,7 @@ open class ACPresenterStatusBar: ACPresenter {
         window.windowLevel = UIWindowLevelStatusBar
         window.rootViewController = viewController
         window.isHidden = false
+        window.isUserInteractionEnabled = false
         presenterView = viewController.view
         
     }
