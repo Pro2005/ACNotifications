@@ -100,7 +100,7 @@ open class ACManager : ACManagerBase, ACTaskDismissProtocol {
     }
     
     // Adds ACTaskRich with specified or default parameters.
-    open func add(notification: ACNotification,
+    @discardableResult open func add(notification: ACNotification,
              delay: TimeInterval? = nil,
              presenter: ACPresenter? = nil,
              animation: ACAnimation? = nil) -> ACTaskRich {
