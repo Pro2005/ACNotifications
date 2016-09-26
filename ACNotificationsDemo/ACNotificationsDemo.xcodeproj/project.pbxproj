@@ -13,14 +13,14 @@
 		D236E1851D3243810010B933 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D236E1841D3243810010B933 /* Assets.xcassets */; };
 		D236E1881D3243810010B933 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D236E1861D3243810010B933 /* LaunchScreen.storyboard */; };
 		D236E1931D3243820010B933 /* ACNotificationsDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D236E1921D3243820010B933 /* ACNotificationsDemoTests.swift */; };
-		D236E19F1D3244310010B933 /* ACManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D236E19E1D3244310010B933 /* ACManager.swift */; };
-		D236E1A11D32444B0010B933 /* ACManagerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D236E1A01D32444B0010B933 /* ACManagerBase.swift */; };
-		D236E1A31D32AD580010B933 /* ACAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = D236E1A21D32AD580010B933 /* ACAnimations.swift */; };
-		D236E1A51D33D5F90010B933 /* ACSimpleNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = D236E1A41D33D5F90010B933 /* ACSimpleNotifications.swift */; };
-		D236E1A71D33DCC40010B933 /* ACPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D236E1A61D33DCC40010B933 /* ACPresenter.swift */; };
-		D23D2C721D3D702700A9FDE8 /* ACCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23D2C711D3D702700A9FDE8 /* ACCore.swift */; };
 		D264C41B1D3F994A00428FAE /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D264C4191D3F994A00428FAE /* DemoViewController.swift */; };
 		D264C41C1D3F994A00428FAE /* DemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D264C41A1D3F994A00428FAE /* DemoViewController.xib */; };
+		D2E3C16C1D99150700CE2EAF /* ACSimpleNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E3C1631D99150700CE2EAF /* ACSimpleNotifications.swift */; };
+		D2E3C16D1D99150700CE2EAF /* ACPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E3C1651D99150700CE2EAF /* ACPresenter.swift */; };
+		D2E3C16E1D99150700CE2EAF /* ACAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E3C1671D99150700CE2EAF /* ACAnimations.swift */; };
+		D2E3C16F1D99150700CE2EAF /* ACCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E3C1691D99150700CE2EAF /* ACCore.swift */; };
+		D2E3C1701D99150700CE2EAF /* ACManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E3C16A1D99150700CE2EAF /* ACManager.swift */; };
+		D2E3C1711D99150700CE2EAF /* ACManagerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E3C16B1D99150700CE2EAF /* ACManagerBase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,14 +44,14 @@
 		D236E18E1D3243820010B933 /* ACNotificationsDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ACNotificationsDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D236E1921D3243820010B933 /* ACNotificationsDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACNotificationsDemoTests.swift; sourceTree = "<group>"; };
 		D236E1941D3243820010B933 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D236E19E1D3244310010B933 /* ACManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ACManager.swift; path = ACNotifications/ACManager.swift; sourceTree = "<group>"; };
-		D236E1A01D32444B0010B933 /* ACManagerBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ACManagerBase.swift; path = ACNotifications/ACManagerBase.swift; sourceTree = "<group>"; };
-		D236E1A21D32AD580010B933 /* ACAnimations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ACAnimations.swift; path = ACNotifications/ACAnimations.swift; sourceTree = "<group>"; };
-		D236E1A41D33D5F90010B933 /* ACSimpleNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ACSimpleNotifications.swift; path = ACNotifications/ACSimpleNotifications.swift; sourceTree = "<group>"; };
-		D236E1A61D33DCC40010B933 /* ACPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ACPresenter.swift; path = ACNotifications/ACPresenter.swift; sourceTree = "<group>"; };
-		D23D2C711D3D702700A9FDE8 /* ACCore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ACCore.swift; path = ACNotifications/ACCore.swift; sourceTree = "<group>"; };
 		D264C4191D3F994A00428FAE /* DemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
 		D264C41A1D3F994A00428FAE /* DemoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DemoViewController.xib; sourceTree = "<group>"; };
+		D2E3C1631D99150700CE2EAF /* ACSimpleNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACSimpleNotifications.swift; sourceTree = "<group>"; };
+		D2E3C1651D99150700CE2EAF /* ACPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACPresenter.swift; sourceTree = "<group>"; };
+		D2E3C1671D99150700CE2EAF /* ACAnimations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACAnimations.swift; sourceTree = "<group>"; };
+		D2E3C1691D99150700CE2EAF /* ACCore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACCore.swift; sourceTree = "<group>"; };
+		D2E3C16A1D99150700CE2EAF /* ACManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACManager.swift; sourceTree = "<group>"; };
+		D2E3C16B1D99150700CE2EAF /* ACManagerBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACManagerBase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,16 +72,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D22009241D98739700C5458B /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				D23D2C711D3D702700A9FDE8 /* ACCore.swift */,
-				D236E1A01D32444B0010B933 /* ACManagerBase.swift */,
-				D236E19E1D3244310010B933 /* ACManager.swift */,
-			);
-			name = Core;
-			sourceTree = "<group>";
-		};
 		D236E1711D3243810010B933 = {
 			isa = PBXGroup;
 			children = (
@@ -128,36 +118,50 @@
 		D236E19D1D3243C00010B933 /* ACNotifications */ = {
 			isa = PBXGroup;
 			children = (
-				D22009241D98739700C5458B /* Core */,
-				D23D2C751D3D75E200A9FDE8 /* Notifications */,
-				D23D2C761D3D760800A9FDE8 /* Animations */,
-				D23D2C771D3D761100A9FDE8 /* Presenters */,
+				D2E3C1621D99150700CE2EAF /* Notifications */,
+				D2E3C1641D99150700CE2EAF /* Presenters */,
+				D2E3C1661D99150700CE2EAF /* Animations */,
+				D2E3C1681D99150700CE2EAF /* Core */,
 			);
 			name = ACNotifications;
 			sourceTree = "<group>";
 		};
-		D23D2C751D3D75E200A9FDE8 /* Notifications */ = {
+		D2E3C1621D99150700CE2EAF /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
-				D236E1A41D33D5F90010B933 /* ACSimpleNotifications.swift */,
+				D2E3C1631D99150700CE2EAF /* ACSimpleNotifications.swift */,
 			);
 			name = Notifications;
+			path = ../ACNotifications/Notifications;
 			sourceTree = "<group>";
 		};
-		D23D2C761D3D760800A9FDE8 /* Animations */ = {
+		D2E3C1641D99150700CE2EAF /* Presenters */ = {
 			isa = PBXGroup;
 			children = (
-				D236E1A21D32AD580010B933 /* ACAnimations.swift */,
-			);
-			name = Animations;
-			sourceTree = "<group>";
-		};
-		D23D2C771D3D761100A9FDE8 /* Presenters */ = {
-			isa = PBXGroup;
-			children = (
-				D236E1A61D33DCC40010B933 /* ACPresenter.swift */,
+				D2E3C1651D99150700CE2EAF /* ACPresenter.swift */,
 			);
 			name = Presenters;
+			path = ../ACNotifications/Presenters;
+			sourceTree = "<group>";
+		};
+		D2E3C1661D99150700CE2EAF /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				D2E3C1671D99150700CE2EAF /* ACAnimations.swift */,
+			);
+			name = Animations;
+			path = ../ACNotifications/Animations;
+			sourceTree = "<group>";
+		};
+		D2E3C1681D99150700CE2EAF /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				D2E3C1691D99150700CE2EAF /* ACCore.swift */,
+				D2E3C16A1D99150700CE2EAF /* ACManager.swift */,
+				D2E3C16B1D99150700CE2EAF /* ACManagerBase.swift */,
+			);
+			name = Core;
+			path = ../ACNotifications/Core;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -264,15 +268,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D236E1A31D32AD580010B933 /* ACAnimations.swift in Sources */,
-				D236E1A51D33D5F90010B933 /* ACSimpleNotifications.swift in Sources */,
+				D2E3C16D1D99150700CE2EAF /* ACPresenter.swift in Sources */,
+				D2E3C1701D99150700CE2EAF /* ACManager.swift in Sources */,
 				D236E1801D3243810010B933 /* ViewController.swift in Sources */,
 				D264C41B1D3F994A00428FAE /* DemoViewController.swift in Sources */,
-				D236E1A11D32444B0010B933 /* ACManagerBase.swift in Sources */,
+				D2E3C16C1D99150700CE2EAF /* ACSimpleNotifications.swift in Sources */,
+				D2E3C1711D99150700CE2EAF /* ACManagerBase.swift in Sources */,
+				D2E3C16F1D99150700CE2EAF /* ACCore.swift in Sources */,
+				D2E3C16E1D99150700CE2EAF /* ACAnimations.swift in Sources */,
 				D236E17E1D3243810010B933 /* AppDelegate.swift in Sources */,
-				D236E19F1D3244310010B933 /* ACManager.swift in Sources */,
-				D23D2C721D3D702700A9FDE8 /* ACCore.swift in Sources */,
-				D236E1A71D33DCC40010B933 /* ACPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
