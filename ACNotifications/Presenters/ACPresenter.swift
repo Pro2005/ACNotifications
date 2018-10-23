@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 
-open class ACPresenterLog: ACPresenter {
+public class ACPresenterLog: ACPresenter {
     open func add(view: UIView) {
         print(Date(), "ACPresenter : addView")
         UIApplication.shared.keyWindow?.addSubview(view)
@@ -19,16 +19,20 @@ open class ACPresenterLog: ACPresenter {
         print(Date(), "ACPresenter : removeView")
         view.removeFromSuperview()
     }
+    
+    public init() {
+        // do nothing
+    }
 }
 
-open class ACPresenterView: ACPresenter {
-    open let presenterView: UIView
+public class ACPresenterView: ACPresenter {
+    public let presenterView: UIView
     
     public init(view: UIView) {
         presenterView = view
     }
     
-    open func add(view: UIView) {
+    public func add(view: UIView) {
         presenterView.addSubview(view)
         
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -42,7 +46,7 @@ open class ACPresenterView: ACPresenter {
         presenterView.layoutSubviews()
     }
     
-    open func remove(view: UIView) {
+    public func remove(view: UIView) {
         view.removeFromSuperview()
     }
 }

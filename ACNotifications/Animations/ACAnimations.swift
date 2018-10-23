@@ -9,10 +9,10 @@
 import Foundation
 import UIKit
 
-open class ACAnimationSlideDown: ACAnimationSimple {
+public class ACAnimationSlideDown: ACAnimationSimple {
     
-    open let duration: TimeInterval
-    open let hasInOutAnimation: Bool = false
+    public let duration: TimeInterval
+    public let hasInOutAnimation: Bool = false
     
     public init(duration: TimeInterval = 0.25) {
         self.duration = duration
@@ -31,11 +31,11 @@ open class ACAnimationSlideDown: ACAnimationSimple {
     }
 }
 
-open class ACAnimationLog: ACAnimationSimple {
-    open var duration: TimeInterval = 3
-    open let hasInOutAnimation: Bool = true
+public class ACAnimationLog: ACAnimationSimple {
+    public var duration: TimeInterval = 3
+    public let hasInOutAnimation: Bool = true
     
-    open func preAnimation(_ view: UIView) { view.alpha = 0; print(Date(), "ACAnimation : preAnimation") }
-    open func inAnimation(_ view: UIView) { view.alpha = 1; print(Date(), "ACAnimation : inAnimation") }
-    open func outAnimation(_ view: UIView) { view.alpha = 0; print(Date(), "ACAnimation : outAnimation") }
+    public func preAnimation(_ view: UIView) { view.alpha = 0; print(Date(), "ACAnimation : preAnimation") }
+    public func inAnimation(_ view: UIView) { view.alpha = 1; print(Date(), "ACAnimation : inAnimation") }
+    public func outAnimation(_ view: UIView) { view.alpha = 0; print(Date(), "ACAnimation : outAnimation") }
 }

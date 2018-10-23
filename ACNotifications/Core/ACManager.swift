@@ -35,7 +35,7 @@ public protocol ACTaskDismissProtocol : class {
 
 // ACTaskRich supports ACNotifications with ACStateListenProtocol
 //TODO: Может попытаться заимплементить через протоколы с расширением
-open class ACTaskRich: ACTaskBase {
+public class ACTaskRich: ACTaskBase {
     
     open weak var delegate: ACTaskDismissProtocol?
     open var delay: TimeInterval?

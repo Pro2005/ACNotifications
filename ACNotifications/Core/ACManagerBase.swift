@@ -26,12 +26,12 @@ public protocol ACTask : class {
     var state: ACTaskState { get set }
 }
 
-open class ACTaskBase : ACTask {
+public class ACTaskBase : ACTask {
     
-    open let notification: ACNotification
-    open let animation: ACAnimation
-    open let presenter: ACPresenter
-    open var state: ACTaskState = .waiting
+    public let notification: ACNotification
+    public let animation: ACAnimation
+    public let presenter: ACPresenter
+    public var state: ACTaskState = .waiting
     
     public init(notification: ACNotification, presenter: ACPresenter, animation: ACAnimation) {
         self.notification = notification
