@@ -71,7 +71,7 @@ open class ACPresenterStatusBar: ACPresenter {
         window = UIWindow(frame: rect)
         window.backgroundColor = UIColor.clear
         window.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        window.windowLevel = UIWindowLevelStatusBar + (aboveNativeStatusBar ? 1 : -1)
+        window.windowLevel = UIWindow.Level.statusBar + (aboveNativeStatusBar ? 1 : -1)
         window.rootViewController = viewController
         window.isHidden = false
         window.isUserInteractionEnabled = false
