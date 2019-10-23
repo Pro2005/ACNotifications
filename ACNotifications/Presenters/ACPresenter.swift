@@ -68,6 +68,10 @@ open class ACPresenterStatusBar: ACPresenter {
         //http://stackoverflow.com/questions/31581526/ios9-covering-status-bar-with-custom-uiwindow-wrong-position?rq=1
         var rect = UIScreen.main.bounds
         rect.size.height = 20
+        if #available(iOS 11.0, *) {
+            let window = UIApplication.shared.keyWindow
+            rect.size.height += window?.safeAreaInsets.top ?? 0
+        }
         window = UIWindow(frame: rect)
         window.backgroundColor = UIColor.clear
         window.autoresizingMask = [.flexibleWidth, .flexibleHeight]
