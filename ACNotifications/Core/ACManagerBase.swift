@@ -62,7 +62,7 @@ open class ACManagerBase {
             print("ACManager. Only .waiting or .finished ACTask could be removed from queue.")
             return
         }
-        if let index = queue.index(where: {$0 === task}) {
+        if let index = queue.firstIndex(where: {$0 === task}) {
             queue.remove(at: index)
         }
     }
